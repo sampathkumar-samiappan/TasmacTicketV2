@@ -1,0 +1,6 @@
+/* Example: App.css or index.css */
+.custom-table .ant-table-thead > tr > th {
+    background-color: #e6f7ff; /* Light blue */
+    color: #000;               /* Optional: text color */
+  }
+  

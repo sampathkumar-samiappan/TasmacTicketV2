@@ -1,0 +1,30 @@
+.status-tag-blue {
+    background: linear-gradient(45deg, #12f838, #b2c3c4) !important;
+    color: black !important;
+    border: none !important;
+  }
+  
+  .status-tag-green {
+    background: linear-gradient(45deg, #eb0505, #eaeeed) !important;
+    color: black !important;
+    border: none !important;
+  }
+  
+  .status-tag-orange {
+    background: linear-gradient(45deg, #f7971e, #ffd200) !important;
+    color: black !important;
+    border: none !important;
+  }
+  
+  .status-tag-red {
+    background: linear-gradient(45deg, #f953c6, #b91d73) !important;
+    color: black !important;
+    border: none !important;
+  }
+  
+  .status-tag-gray {
+    background: linear-gradient(45deg, #bdc3c7, #2c3e50) !important;
+    color: black !important;
+    border: none !important;
+  }
+  

@@ -1,0 +1,46 @@
+/* Table header styles */
+.table-header {
+    background-image: linear-gradient(to bottom, #ffffff20, #403d47);
+    color: white;
+    border-right: 1px solid white;
+  }
+  
+  /* Special style for the last header cell */
+  .table-header-last {
+    background-image: linear-gradient(to bottom, #ffffff20, #403d47);
+    color: white;
+    border-top-right-radius: 10px;
+  }
+  
+  /* Optional: Table body styling if needed */
+  .table-cell {
+    color: black; /* or your preferred style */
+  }
+  
+
+  
+  .custom-table {
+    background-color: #f9f9f9; /* light grey background for the table */
+    border-radius: 8px;
+  }
+  
+  .table-header {
+    background-image: linear-gradient(to bottom, #ffffff08 5%, #403d47 95%);
+    color: white;
+    border-right: 1px solid white;
+  }
+  
+  .table-header-last {
+    background-image: linear-gradient(to bottom, #ffffff08 5%, #403d47 95%);
+    color: white;
+    border-top-right-radius: 10px;
+  }
+  
+  /* Striped table rows */
+  .MuiTableBody-root .MuiTableRow-root:nth-child(odd) {
+    background-color: #ffffff; /* white for odd rows */
+  }
+  
+  .MuiTableBody-root .MuiTableRow-root:nth-child(even) {
+    background-color: #f1f1f1; /* light grey for even rows */
+  }

@@ -1,0 +1,76 @@
+/* Dashboard Grid Layout - tighter spacing */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 0.6rem; /* reduced gap */
+    margin-bottom: 1.2rem; /* reduced bottom margin */
+  }
+  
+  /* Card Styling - smaller padding, tighter box */
+  .card {
+    background-color: #fff;
+    border-radius: 0.75rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    padding: 0.8rem 1rem; /* less padding */
+    transition: transform 0.15s;
+  }
+  
+  .card:hover {
+    transform: translateY(-3px);
+  }
+  
+  /* Card Header and Content Text - smaller font & less spacing */
+  .card-header {
+    font-weight: 600;
+    font-size: 1rem;
+    margin-bottom: 0.3rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .card-content {
+    font-size: 0.85rem;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  /* Table Container */
+  .table-container {
+    overflow-x: auto;
+    margin-top: 1rem; /* less margin */
+  }
+  
+  /* Table Styling - smaller padding */
+  table {
+    width: 100%;
+    min-width: 550px; /* slightly smaller min width */
+    border-collapse: collapse;
+    font-size: 0.9rem; /* smaller font */
+  }
+  
+  table th,
+  table td {
+    padding: 0.4rem 0.6rem; /* less padding */
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+    white-space: nowrap;
+  }
+  
+  /* Responsive Fixes */
+  @media (max-width: 768px) {
+    .dashboard-grid {
+      grid-template-columns: 1fr;
+    }
+  
+    .card {
+      padding: 0.75rem 0.8rem;
+    }
+  
+    table {
+      min-width: 100%;
+      font-size: 0.85rem;
+    }
+  }

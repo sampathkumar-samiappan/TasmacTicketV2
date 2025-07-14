@@ -11,8 +11,9 @@ import {
   Col,
   Divider,
   Empty,
+  Breadcrumb,
 } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
+import { UploadOutlined ,HomeOutlined} from '@ant-design/icons';
 import axios from 'axios';
 import { HEADERS, BASE_URL } from '../API Config/config';
 
@@ -176,15 +177,32 @@ const CreateTicketForm = () => {
 
       form.resetFields();
       setFileList([]);
-      Swal.fire({ icon: 'success', title: 'Ticket Submitted Successfully!' });
+      Swal.fire({ icon: 'success', title: 'Ticket Submitted Successfully!'  ,timer: 2000,
+  timerProgressBar: true});
     } catch (err) {
-      Swal.fire({ icon: 'error', title: 'Submission Failed!', text: err.message || 'Something went wrong.' });
+      Swal.fire({ icon: 'error', title: 'Submission Failed!', text: err.message || 'Something went wrong.' , timer: 2000,
+  timerProgressBar: true});
     }
   };
 
   return (
     <Card style={{ maxWidth: 1100, margin: '0 auto', borderRadius: 10 }}>
-      <h2>Create Ticket</h2>
+      {/* <h2>Create Ticket</h2> */}
+      <Breadcrumb
+        items={[
+          {
+            title: (
+              <>
+                <HomeOutlined />
+                <span style={{ marginLeft: 4 }}>Home</span>
+              </>
+            ),
+          },
+          {
+            title: <a href="">Create Ticket</a>,
+          }
+        ]}
+      />
       <Divider />
       <Form form={form} layout="vertical" onFinish={handleSubmit}>
         <Row gutter={16}>
@@ -369,12 +387,22 @@ const CreateTicketForm = () => {
           <Col span={8}><Form.Item name="ticket_raised_by" label="Ticket Raised By"><Input /></Form.Item></Col>
           <Col span={8}><Form.Item name="priority" label="Priority"><Select><Option value="High">High</Option><Option value="Low">Low</Option></Select></Form.Item></Col>
           <Col span={8}><Form.Item name="status" label="Status"><Select><Option value="Open">Open</Option><Option value="Closed">Closed</Option></Select></Form.Item></Col>
-          <Col span={8}><Form.Item label="Upload File"><Upload fileList={fileList} onChange={handleFileChange} beforeUpload={() => false} maxCount={1}><Button icon={<UploadOutlined />}>Upload</Button></Upload></Form.Item></Col>
+          <Col span={8}><Form.Item label="Upload File"><Upload fileList={fileList} onChange={handleFileChange} beforeUpload={() => false} maxCount={1}><Button style={{ width: 250 }} icon={<UploadOutlined />}>Upload</Button></Upload></Form.Item></Col>
           <Col span={24}><Form.Item name="description" label="Description"><TextArea rows={4} /></Form.Item></Col>
         </Row>
-        <Form.Item style={{ textAlign: 'right' }}>
-          <Button type="primary" htmlType="submit">Submit</Button>
+        <Form.Item style={{ textAlign: 'center' }}>
+          <Button
+            variant="outlined"
+            style={{ width: 120, marginRight: 16 }}
+            onClick={() => { form.resetFields(); setFileList([]); }}
+          >
+            Clear
+          </Button>
+          <Button style={{ width: 250 }} type="primary" htmlType="submit">
+            Submit
+          </Button>
         </Form.Item>
+
       </Form>
     </Card>
   );

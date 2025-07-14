@@ -17,6 +17,7 @@ import {
   Modal,
   Divider,
   Descriptions,
+  Breadcrumb,
 } from "antd";
 import axios from "axios";
 import { HEADERS, BASE_URL } from "../API Config/config";
@@ -24,6 +25,7 @@ import {
   FileExcelOutlined,
   FilterOutlined,
   FilePdfOutlined,
+  HomeOutlined,
 } from "@ant-design/icons";
 import * as XLSX from "xlsx";
 import jsPDF from "jspdf";
@@ -284,7 +286,23 @@ const List = () => {
 
   return (
     <div>
-      <Title level={3}>Ticket Report</Title>
+      {/* <Title level={3}>Ticket Report</Title> */}
+      <Breadcrumb
+      style={{margin:15}}
+        items={[
+          {
+            title: (
+              <>
+                <HomeOutlined />
+                <span style={{ marginLeft: 4 }}>Home</span>
+              </>
+            ),
+          },
+          {
+            title: <a href="">Reports</a>,
+          }
+        ]}
+      />
       <Space style={{ marginBottom: 16 }}>
         <Dropdown overlay={menu} trigger={["click"]}>
           <Button icon={<FilterOutlined />}>Columns</Button>

@@ -5,36 +5,41 @@ import { URL_ticketuser, HEADERS } from "../API Config/config";
 
 const { Option } = Select;
 
-const TicketForm = ({ formValues, handleChange, isEdit, editableFields = [], onFormInstanceReady }) => {
+const TicketForm = ({
+  formValues,
+  handleChange,
+  isEdit,
+  editableFields = [],
+  onFormInstanceReady,
+}) => {
   const [form] = Form.useForm();
   const [serviceEngineers, setServiceEngineers] = useState([]);
 
   const isDisabled = (field) => isEdit && !editableFields.includes(field);
 
- useEffect(() => {
-  const fetchServiceEngineers = async () => {
-    try {
-      const response = await axios.get(`${URL_ticketuser}?fields=["*"]`, {
-        headers: HEADERS,
-      });
+  useEffect(() => {
+    const fetchServiceEngineers = async () => {
+      try {
+        const response = await axios.get(`${URL_ticketuser}?fields=["*"]`, {
+          headers: HEADERS,
+        });
 
-      const currentUser = JSON.parse(localStorage.getItem("userData"));
-      const userDepot = currentUser?.depot;
+        const currentUser = JSON.parse(localStorage.getItem("userData"));
+        const userDepot = currentUser?.depot;
 
-      const engineers = response.data.data.filter(
-        (user) =>
-          user.usertype === "Service Engineer" && user.depot === userDepot
-      );
+        const engineers = response.data.data.filter(
+          (user) =>
+            user.usertype === "Service Engineer" && user.depot === userDepot
+        );
 
-      setServiceEngineers(engineers);
-    } catch (error) {
-      console.error("Error fetching users:", error);
-    }
-  };
+        setServiceEngineers(engineers);
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      }
+    };
 
-  fetchServiceEngineers();
-}, []);
-
+    fetchServiceEngineers();
+  }, []);
 
   // Optional: Pass form instance to parent if needed for submission
   useEffect(() => {
@@ -68,35 +73,47 @@ const TicketForm = ({ formValues, handleChange, isEdit, editableFields = [], onF
           </Form.Item>
         </Col>
 
+        {/* ✅ New: Supplier Name */}
         <Col span={24}>
-          <Form.Item label="Region" name="region">
+          <Form.Item label="Supplier Name" name="supplier_name">
             <Input
-              name="region"
-              value={formValues.region}
-              onChange={handleChange}
-              disabled={isDisabled("region")}
+              name="supplier_name"
+              value={
+                formValues.supplier_name?.trim()
+                  ? formValues.supplier_name
+                  : "N/A"
+              }
+              disabled
             />
           </Form.Item>
         </Col>
 
+        {/* ✅ New: RV Shop */}
         <Col span={24}>
-          <Form.Item label="DM" name="dm">
+          <Form.Item label="RV Shop" name="rvshop_no">
             <Input
-              name="dm"
-              value={formValues.dm}
-              onChange={handleChange}
-              disabled={isDisabled("dm")}
+              name="rvshop_no"
+              value={
+                formValues.rvshop_no?.trim()
+                  ? formValues.rvshop_no
+                  : "N/A"
+              }
+              disabled
             />
           </Form.Item>
         </Col>
 
+        {/* ✅ New: Depot Name */}
         <Col span={24}>
-          <Form.Item label="Depot" name="depot">
+          <Form.Item label="Depot Name" name="depot_name">
             <Input
-              name="depot"
-              value={formValues.depot}
-              onChange={handleChange}
-              disabled={isDisabled("depot")}
+              name="depot_name"
+              value={
+                formValues.depot_name?.trim()
+                  ? formValues.depot_name
+                  : "N/A"
+              }
+              disabled
             />
           </Form.Item>
         </Col>

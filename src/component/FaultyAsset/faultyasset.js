@@ -12,9 +12,10 @@ import {
   Select, 
   Tooltip,
   List,
-  Typography
+  Typography,
+  Breadcrumb,
 } from 'antd';
-import { DownloadOutlined, EditOutlined, ClockCircleTwoTone } from '@ant-design/icons';
+import { DownloadOutlined, EditOutlined, ClockCircleTwoTone, HomeOutlined } from '@ant-design/icons';
 import * as XLSX from 'xlsx';
 import historyIcon from '../../assets/images/history.png';
 import nodata from '../../assets/images/no-data.gif';
@@ -273,9 +274,24 @@ const FaultyAsset = () => {
   return (
     <div style={{ padding: 24 }}>
       <div style={{ position: 'sticky', top: 0, backgroundColor: 'white', zIndex: 10, paddingBottom: 8 }}>
-        <h2 style={{ margin: 0 }}>Faulty Assets</h2>
-        <div style={{ textAlign: 'right', marginTop: 8 }}>
-          <Button type="primary" icon={<DownloadOutlined />} onClick={exportToExcel}>
+        {/* <h2 style={{ margin: 0 }}>Faulty Assets</h2> */}
+          <Breadcrumb
+                items={[
+                  {
+                    title: (
+                      <>
+                        <HomeOutlined />
+                        <span style={{ marginLeft: 4 }}>Home</span>
+                      </>
+                    ),
+                  },
+                  {
+                    title: <a href="">Faulty Asset</a>,
+                  }
+                ]}
+              />
+        <div style={{ textAlign: 'right', marginTop:4}}>
+          <Button style={{ textAlign: 'right'}} type="primary" icon={<DownloadOutlined />} onClick={exportToExcel}>
             Export to Excel
           </Button>
         </div>

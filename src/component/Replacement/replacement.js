@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from 'react';
-import { Table, Input, Modal, Button, Form, message, Popconfirm, Select, Tooltip, List, Typography } from 'antd';
-import { EditOutlined, DeleteOutlined, ClockCircleTwoTone } from '@ant-design/icons';
+import { Table, Input, Modal, Button, Form, message, Popconfirm, Select, Tooltip, List, Typography, Breadcrumb } from 'antd';
+import { EditOutlined, DeleteOutlined, ClockCircleTwoTone, HomeOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import { BASE_URL, HEADERS } from '../API Config/config';
 import nodata from '../../assets/images/no-data.gif';
@@ -89,12 +89,12 @@ const ReplacementAsset = () => {
     try {
       // 1. Validate form values
       const values = await form.validateFields();
-  
+
       // 2. Update Asset
       await axios.put(`${BASE_URL}/api/resource/Asset/${editingRecord.name}`, values, {
         headers: HEADERS,
       });
-  
+
       // 3. Prepare log details
       const asset_id = editingRecord.name;
       const userData = JSON.parse(localStorage.getItem("userData")) || {};
@@ -103,7 +103,7 @@ const ReplacementAsset = () => {
       const action_type = "Updated";
       const remarks = values.remarks || editingRecord.remarks || "Asset updated by user";
       const status = values.status || "Active";
-  
+
       console.log("📤 Logging to AssetLog with:", {
         asset_id,
         user_id,
@@ -112,7 +112,7 @@ const ReplacementAsset = () => {
         remarks,
         status,
       });
-  
+
       // 4. Log to custom API
       const logResponse = await fetch(`${BASE_URL}/api/method/log_asset_action`, {
         method: "POST",
@@ -129,14 +129,14 @@ const ReplacementAsset = () => {
           status,
         }),
       });
-  
+
       const logResult = await logResponse.json();
       console.log("📦 AssetLog API Response:", logResult);
-  
+
       if (!logResponse.ok) {
         console.error("❌ Asset log failed:", logResult.message || "Unknown error");
       }
-  
+
       // 5. Success Message
       await Swal.fire({
         icon: "success",
@@ -144,12 +144,12 @@ const ReplacementAsset = () => {
         showConfirmButton: false,
         timer: 2000,
       });
-  
+
       // 6. Final Steps
       setIsModalVisible(false);
       fetchReplacementAssets();
       fetchAssetLogs(editingRecord.name);
-  
+
     } catch (error) {
       console.error("❌ Error updating asset or creating log:", error);
       await Swal.fire({
@@ -159,38 +159,38 @@ const ReplacementAsset = () => {
       });
     }
   };
-  
 
-    const fetchAssetLogs = async (assetId) => {
-      if (!assetId) return;
-    
-      try {
-        const response = await fetch(
-          `${BASE_URL}/api/resource/AssetLog?fields=["*"]&filters=[["asset_id","=","${assetId}"]]`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              ...HEADERS,
-            },
-          }
-        );
-        const data = await response.json();
-        if (Array.isArray(data.data)) {
-          setLogData(data.data);
-          setSelectedAssetId(assetId);
-          console.log(data.data );
 
-          setLogModalVisible(true);
-        } else {
-          setLogData([]);
-          setSelectedAssetId(assetId);
-          setLogModalVisible(true);
+  const fetchAssetLogs = async (assetId) => {
+    if (!assetId) return;
+
+    try {
+      const response = await fetch(
+        `${BASE_URL}/api/resource/AssetLog?fields=["*"]&filters=[["asset_id","=","${assetId}"]]`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            ...HEADERS,
+          },
         }
-      } catch (error) {
-        console.error("Failed to fetch asset logs:", error);
+      );
+      const data = await response.json();
+      if (Array.isArray(data.data)) {
+        setLogData(data.data);
+        setSelectedAssetId(assetId);
+        console.log(data.data);
+
+        setLogModalVisible(true);
+      } else {
+        setLogData([]);
+        setSelectedAssetId(assetId);
+        setLogModalVisible(true);
       }
-    };
-    
+    } catch (error) {
+      console.error("Failed to fetch asset logs:", error);
+    }
+  };
+
 
   const handleDelete = async (name) => {
     try {
@@ -241,7 +241,7 @@ const ReplacementAsset = () => {
         </Tooltip>
       ),
     },
-    
+
     {
       title: 'Actions',
       key: 'actions',
@@ -263,7 +263,23 @@ const ReplacementAsset = () => {
 
   return (
     <div style={{ padding: 24 }}>
-      <h2>Replacement Assets</h2>
+      {/* <h2>Replacement Assets</h2> */}
+      <Breadcrumb
+        style={{ margin: 15 }}
+        items={[
+          {
+            title: (
+              <>
+                <HomeOutlined />
+                <span style={{ marginLeft: 4 }}>Home</span>
+              </>
+            ),
+          },
+          {
+            title: <a href="">Replacement Asset</a>,
+          }
+        ]}
+      />
       <Table
         className="custom-table"
         columns={columns}
@@ -295,7 +311,7 @@ const ReplacementAsset = () => {
           <Form.Item name="shop_number" label="Shop Number"><Input /></Form.Item>
 
           <Form.Item name="status" label="Status">
-            
+
             <Select>
               <Select.Option value="Active">Active</Select.Option>
               <Select.Option value="Faulty">Faulty</Select.Option>

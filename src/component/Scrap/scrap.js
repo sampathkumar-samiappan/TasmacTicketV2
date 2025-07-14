@@ -10,9 +10,10 @@ import {
   Select,
   Tooltip,
   List,
-  Typography
+  Typography,
+  Breadcrumb,
 } from 'antd';
-import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import { EditOutlined, DeleteOutlined , HomeOutlined} from '@ant-design/icons';
 import { BASE_URL, HEADERS } from '../API Config/config';
 import Swal from 'sweetalert2';
 import { ClockCircleTwoTone } from '@ant-design/icons';
@@ -234,7 +235,23 @@ const ScrapAsset = () => {
 
   return (
     <div style={{ width: "1250px", overflowX: "auto" }}>
-      <h2>Scrap Assets</h2>
+      {/* <h2>Scrap Assets</h2> */}
+      <Breadcrumb
+              style={{ margin: 15 }}
+              items={[
+                {
+                  title: (
+                    <>
+                      <HomeOutlined />
+                      <span style={{ marginLeft: 4 }}>Home</span>
+                    </>
+                  ),
+                },
+                {
+                  title: <a href="">Scrap Assets</a>,
+                }
+              ]}
+            />
       <Table
         className="custom-table"
         columns={columns}

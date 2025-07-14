@@ -40,22 +40,22 @@ const Sidebar = ({ collapsed, onCollapse, isMobile, drawerOpen, toggleDrawer }) 
     { label: "Create Ticket", icon: <AppstoreAddOutlined />, path:"/app/tickets/create" },
     { label: "Location", icon: <EnvironmentOutlined />, path: "/app/master/locations" },
     { label: "Reports", icon: <BarChartOutlined />, path: "/app/analytics/reports" },
-    { label: "Assets", icon: <BankOutlined />, path:"/app/master/assets" },
+    { label: "Asset Master", icon: <BankOutlined />, path:"/app/master/assets" },
     { label: "Projects", icon: <ExperimentOutlined />, path: "/app/master/projects"},
-    { label: "User Settings", icon: <SettingOutlined />, path: "/app/users/settings" },
+    { label: "User Management", icon: <SettingOutlined />, path: "/app/users/settings" },
     { label: "Faulty Asset", icon: <ToolOutlined />, path: "/app/master/faultyassets" },
     { label: "Replacement Asset", icon: <SyncOutlined />, path: "/app/master/replacementassets" },
     { label: "Scrap Asset", icon: <DeleteOutlined />, path: "/app/master/scrapassets" },
   ];
 
   const allowedLabelsByRole = {
-    Admin: ["Home", "Dashboard", "Reports","Create Ticket","Assets","User Settings","Faulty Asset","Replacement Asset","Scrap Asset"],
+    Admin: ["Home", "Dashboard", "Reports","Create Ticket","Asset Master","User Management","Faulty Asset","Replacement Asset","Scrap Asset"],
     "Support Team": ["Create Ticket","Home"],
     "Service Engineer": ["Home"],
-    "Region Admin":["Home", "Reports","Create Ticket","Assets"],
-    "Dm Admin": ["Assets", "Create Ticket","Dashboard"],
-    "Depot Admin": ["Assets", "Create Ticket"],
-    "RvShop Admin": ["Assets", "Create Ticket"],
+    "Region Admin":["Home", "Reports","Create Ticket","Asset Master"],
+    "Dm Admin": ["Asset Master", "Create Ticket","Dashboard"],
+    "Depot Admin": ["Asset Master", "Create Ticket"],
+    "RvShop Admin": ["Asset Master", "Create Ticket"],
   };
 
   const allowedLabels = allowedLabelsByRole[userType] || [];

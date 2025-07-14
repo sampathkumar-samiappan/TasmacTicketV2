@@ -20,8 +20,10 @@ import {
   Flex,
   Modal,
   List,
+  Breadcrumb,
 } from "antd";
-import { CloseOutlined, DownloadOutlined, ReloadOutlined, ClockCircleTwoTone } from '@ant-design/icons';
+import { InfoCircleOutlined } from '@ant-design/icons';
+import { CloseOutlined, DownloadOutlined, ReloadOutlined, ClockCircleTwoTone , HomeOutlined} from '@ant-design/icons';
 import { toast } from "react-toastify";
 import TicketForm from "../TicketForm/ticketform";
 import {URL_ticket, URL_ticketlog, URL_getTicketLogs, HEADERS, BASE_URL} from "../API Config/config";
@@ -345,6 +347,8 @@ const Dashboard = () => {
     {
       title: 'Asset Type',
       dataIndex: 'asset_type',
+      render: (text) => text ? text : 'N/A',
+
       sorter: (a, b) => (a.asset_type || '').localeCompare(b.asset_type || ''),
     },
     {
@@ -353,18 +357,24 @@ const Dashboard = () => {
       sorter: (a, b) => (a.assets_category || '').localeCompare(b.assets_category || ''),
     },
     {
-      title: 'Region',
-      dataIndex: 'region',
+      title: 'Supplier Name',
+      dataIndex: 'supplier_name',
+      render: (text) => text ? text : 'N/A',
+
       sorter: (a, b) => (a.region || '').localeCompare(b.region || ''),
     },
     {
-      title: 'DM',
-      dataIndex: 'dm',
+      title: 'RV Shop',
+      dataIndex: 'rvshop_no',
+      render: (text) => text ? text : 'N/A',
+
       sorter: (a, b) => (a.dm || '').localeCompare(b.dm || ''),
     },
     {
       title: 'Depot',
-      dataIndex: 'depot',
+      dataIndex: 'depot_name',
+      render: (text) => text ? text : 'N/A',
+
       sorter: (a, b) => (a.depot || '').localeCompare(b.depot || ''),
     },
     {
@@ -408,6 +418,22 @@ const Dashboard = () => {
 
   return (
     <>
+    <Breadcrumb
+            style={{ margin: 15 }}
+            items={[
+              {
+                title: (
+                  <>
+                    <HomeOutlined />
+                    <span style={{ marginLeft: 4 }}>Home</span>
+                  </>
+                ),
+              },
+              {
+                title: <a href="">Ticket List</a>,
+              }
+            ]}
+          />
       <Header style={{ background: token.colorBgContainer, padding: 5 }}>
         <Row gutter={[5, 5]} style={{ height: '5px' ,paddingTop:'15px'}}>
 

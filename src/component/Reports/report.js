@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import BackToTopButton from '../BackToTop/BackToTopButton';
 import {
   Card,
   Radio,
@@ -285,6 +286,7 @@ const List = () => {
   };
 
   return (
+    <>
     <div>
       {/* <Title level={3}>Ticket Report</Title> */}
       <Breadcrumb
@@ -417,6 +419,8 @@ const List = () => {
         </Modal>
       )}
     </div>
+    <BackToTopButton />
+    </>
   );
 };
 

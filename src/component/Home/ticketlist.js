@@ -3,6 +3,7 @@ import nodata from '../../assets/images/no-data.gif';
 import history from '../../assets/images/history.png';
 import axios from 'axios';
 import Footer from "../Footer/Footer";
+import BackToTopButton from '../BackToTop/BackToTopButton';
 import {
   Table,
   Tag,
@@ -648,6 +649,7 @@ const fetchOffice = async () => {
         </Modal>
       </Flex>
       {/* Ticket Log End*/}
+      <BackToTopButton />
       <Footer/>
     </>
   );

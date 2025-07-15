@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Footer from "../Footer/Footer";
+import BackToTopButton from '../BackToTop/BackToTopButton';
 import { BASE_URL, HEADERS } from "../API Config/config";
 import {
   Table,
@@ -10,7 +11,7 @@ import {
   Modal,
   Form,
   message,
-  Select, 
+  Select,
   Tooltip,
   List,
   Typography,
@@ -121,22 +122,22 @@ const FaultyAsset = () => {
       // 1. Validate form fields
       const values = await form.validateFields();
       const assetId = selectedAsset.name;
-  
+
       // 2. Get user info
       const userData = JSON.parse(localStorage.getItem("userData")) || {};
       const username = userData.username || "Unknown";
       const user_id = userData.user_id || "Unknown";
-  
+
       // 3. Update asset
       await axios.put(`${BASE_URL}/api/resource/Asset/${assetId}`, values, {
         headers: HEADERS,
       });
-  
+
       // 4. Prepare log values
       const action_type = "Updated";
       const remarks = values.remarks || selectedAsset.remarks || "Asset updated successfully";
       const status = values.status || "Active";
-  
+
       console.log("📤 Logging to AssetLog with:", {
         asset_id: assetId,
         user_id,
@@ -145,7 +146,7 @@ const FaultyAsset = () => {
         remarks,
         status,
       });
-  
+
       // 5. Log to AssetLog Doctype
       const logResponse = await fetch(`${BASE_URL}/api/method/log_asset_action`, {
         method: "POST",
@@ -162,14 +163,14 @@ const FaultyAsset = () => {
           status,
         }),
       });
-  
+
       const logResult = await logResponse.json();
       console.log("📦 AssetLog API Response:", logResult);
-  
+
       if (!logResponse.ok) {
         console.error("❌ Asset log failed:", logResult.message || "Unknown error");
       }
-  
+
       // 6. Show success message
       await Swal.fire({
         icon: "success",
@@ -177,11 +178,11 @@ const FaultyAsset = () => {
         showConfirmButton: false,
         timer: 2000,
       });
-  
+
       // 7. Final steps
       setIsModalVisible(false);
       fetchFaultyAssets();
-  
+
     } catch (err) {
       console.error("❌ Error updating asset:", err);
       await Swal.fire({
@@ -191,39 +192,39 @@ const FaultyAsset = () => {
       });
     }
   };
-  
 
 
-    const fetchAssetLogs = async (assetId) => {
-      if (!assetId) return;
-    
-      try {
-        const response = await fetch(
-          `${BASE_URL}/api/resource/AssetLog?fields=["*"]&filters=[["asset_id","=","${assetId}"]]`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              ...HEADERS,
-            },
-          }
-        );
-        const data = await response.json();
-        if (Array.isArray(data.data)) {
-          setLogData(data.data);
-          setSelectedAssetId(assetId);
-          console.log(data.data );
 
-          setLogModalVisible(true);
-        } else {
-          setLogData([]);
-          setSelectedAssetId(assetId);
-          setLogModalVisible(true);
+  const fetchAssetLogs = async (assetId) => {
+    if (!assetId) return;
+
+    try {
+      const response = await fetch(
+        `${BASE_URL}/api/resource/AssetLog?fields=["*"]&filters=[["asset_id","=","${assetId}"]]`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            ...HEADERS,
+          },
         }
-      } catch (error) {
-        console.error("Failed to fetch asset logs:", error);
+      );
+      const data = await response.json();
+      if (Array.isArray(data.data)) {
+        setLogData(data.data);
+        setSelectedAssetId(assetId);
+        console.log(data.data);
+
+        setLogModalVisible(true);
+      } else {
+        setLogData([]);
+        setSelectedAssetId(assetId);
+        setLogModalVisible(true);
       }
-    };
-    
+    } catch (error) {
+      console.error("Failed to fetch asset logs:", error);
+    }
+  };
+
 
   const columns = [
     ...columnsMeta.map(({ title, dataIndex }) => ({
@@ -273,113 +274,114 @@ const FaultyAsset = () => {
   ];
 
   return (
-      <>
-    <div style={{ padding: 24 }}>
-      <div style={{ position: 'sticky', top: 0, backgroundColor: 'white', zIndex: 10, paddingBottom: 8 }}>
-        {/* <h2 style={{ margin: 0 }}>Faulty Assets</h2> */}
+    <>
+      <div style={{ padding: 24 }}>
+        <div style={{ position: 'sticky', top: 0, backgroundColor: 'white', zIndex: 10, paddingBottom: 8 }}>
+          {/* <h2 style={{ margin: 0 }}>Faulty Assets</h2> */}
           <Breadcrumb
-                items={[
-                  {
-                    title: (
-                      <>
-                        <HomeOutlined />
-                        <span style={{ marginLeft: 4 }}>Home</span>
-                      </>
-                    ),
-                  },
-                  {
-                    title: <a href="">Faulty Asset</a>,
-                  }
-                ]}
-              />
-        <div style={{ textAlign: 'right', marginTop:4}}>
-          <Button style={{ textAlign: 'right'}} type="primary" icon={<DownloadOutlined />} onClick={exportToExcel}>
-            Export to Excel
-          </Button>
-        </div>
-      </div>
-
-      <div style={{ maxHeight: '500px', overflowY: 'auto', marginTop: 16 }}>
-        <Table
-          columns={columns}
-          dataSource={filteredData}
-          className="custom-table"
-          loading={loading}
-          pagination={{ pageSize: 10 }}
-          rowKey={(record, index) => record.name || index}
-          bordered
-          scroll={{ x: 'max-content' }}
-        />
-      </div>
-
-      <Modal
-        title="Edit Asset"
-        open={isModalVisible}
-        onOk={handleUpdate}
-        onCancel={() => setIsModalVisible(false)}
-        okText="Update"
-        destroyOnClose
-      >
-        <Form form={form} layout="vertical">
-          <Form.Item name="asset_type" label="Asset Type" rules={[{ required: true }]}><Input /></Form.Item>
-          <Form.Item name="serial_number" label="Serial Number" rules={[{ required: true }]}><Input /></Form.Item>
-          <Form.Item name="make" label="Make"><Input /></Form.Item>
-          <Form.Item name="model" label="Model"><Input /></Form.Item>
-          <Form.Item name="region" label="Region"><Input /></Form.Item>
-          <Form.Item name="dm" label="DM"><Input /></Form.Item>
-          <Form.Item name="depot" label="Depot"><Input /></Form.Item>
-          <Form.Item name="shop_number" label="Shop Number"><Input /></Form.Item>
-          <Form.Item name="status" label="Status">
-            <Select>
-              <Select.Option value="Active">Active</Select.Option>
-              <Select.Option value="Faulty">Faulty</Select.Option>
-              <Select.Option value="Replacement">Replacement</Select.Option>
-            </Select>
-          </Form.Item>
-                    <Form.Item name="remarks" label="remarks"><Input /></Form.Item>
-          
-        </Form>
-      </Modal>
-
-      <Modal
-        title={`Asset Logs - ${selectedAssetId}`}
-        open={logModalVisible}
-        onCancel={() => setLogModalVisible(false)}
-        footer={null}
-        width={700}
-      >
-        {logData.length > 0 ? (
-          <List
-            bordered
-            dataSource={logData}
-            style={{ maxHeight: 300, overflowY: 'auto' }}
-            renderItem={(log, index) => (
-              <List.Item>
-                <div style={{ width: '100%' }}>
-                  <Text strong>{index + 1}.</Text>{' '}
-                  <Text style={{ color: '#025E73' }}>{(log.username || 'Unknown').toUpperCase()}</Text>{' '}performed{' '}
-                  <Text strong style={{ color: '#fa541c' }}>{log.action_type}</Text>{' '}on Asset ID{' '}
-                  <Text code>{selectedAssetId}</Text>.<br />
-                  Status: <Text strong style={{ color: '#52c41a' }}>{log.status}</Text><br />
-                  Remark: <Text style={{ color: '#025E73' }}>{(log.remarks || '—').toUpperCase()}</Text><br />
-                  <Text type="secondary">
-                    <ClockCircleTwoTone twoToneColor="#52c41a" />{' '}
-                    <Text style={{ color: '#F2A71B' }}>{log.datetime ? new Date(log.datetime).toLocaleString() : 'No timestamp'}</Text>
-                  </Text>
-                </div>
-              </List.Item>
-            )}
+            items={[
+              {
+                title: (
+                  <>
+                    <HomeOutlined />
+                    <span style={{ marginLeft: 4 }}>Home</span>
+                  </>
+                ),
+              },
+              {
+                title: <a href="">Faulty Asset</a>,
+              }
+            ]}
           />
-        ) : (
-          <div style={{ textAlign: 'center', marginTop: '20px' }}>
-            <Text type="secondary">No History Available.</Text><br />
-            <img style={{ height: '150px', width: '150px', marginTop: '10px' }} src={nodata} alt="No Data" />
+          <div style={{ textAlign: 'right', marginTop: 4 }}>
+            <Button style={{ textAlign: 'right' }} type="primary" icon={<DownloadOutlined />} onClick={exportToExcel}>
+              Export to Excel
+            </Button>
           </div>
-        )}
-      </Modal>
-    </div>
-    <Footer/>
-  
+        </div>
+
+        <div style={{ maxHeight: '500px', overflowY: 'auto', marginTop: 16 }}>
+          <Table
+            columns={columns}
+            dataSource={filteredData}
+            className="custom-table"
+            loading={loading}
+            pagination={{ pageSize: 10 }}
+            rowKey={(record, index) => record.name || index}
+            bordered
+            scroll={{ x: 'max-content' }}
+          />
+        </div>
+
+        <Modal
+          title="Edit Asset"
+          open={isModalVisible}
+          onOk={handleUpdate}
+          onCancel={() => setIsModalVisible(false)}
+          okText="Update"
+          destroyOnClose
+        >
+          <Form form={form} layout="vertical">
+            <Form.Item name="asset_type" label="Asset Type" rules={[{ required: true }]}><Input /></Form.Item>
+            <Form.Item name="serial_number" label="Serial Number" rules={[{ required: true }]}><Input /></Form.Item>
+            <Form.Item name="make" label="Make"><Input /></Form.Item>
+            <Form.Item name="model" label="Model"><Input /></Form.Item>
+            <Form.Item name="region" label="Region"><Input /></Form.Item>
+            <Form.Item name="dm" label="DM"><Input /></Form.Item>
+            <Form.Item name="depot" label="Depot"><Input /></Form.Item>
+            <Form.Item name="shop_number" label="Shop Number"><Input /></Form.Item>
+            <Form.Item name="status" label="Status">
+              <Select>
+                <Select.Option value="Active">Active</Select.Option>
+                <Select.Option value="Faulty">Faulty</Select.Option>
+                <Select.Option value="Replacement">Replacement</Select.Option>
+              </Select>
+            </Form.Item>
+            <Form.Item name="remarks" label="remarks"><Input /></Form.Item>
+
+          </Form>
+        </Modal>
+
+        <Modal
+          title={`Asset Logs - ${selectedAssetId}`}
+          open={logModalVisible}
+          onCancel={() => setLogModalVisible(false)}
+          footer={null}
+          width={700}
+        >
+          {logData.length > 0 ? (
+            <List
+              bordered
+              dataSource={logData}
+              style={{ maxHeight: 300, overflowY: 'auto' }}
+              renderItem={(log, index) => (
+                <List.Item>
+                  <div style={{ width: '100%' }}>
+                    <Text strong>{index + 1}.</Text>{' '}
+                    <Text style={{ color: '#025E73' }}>{(log.username || 'Unknown').toUpperCase()}</Text>{' '}performed{' '}
+                    <Text strong style={{ color: '#fa541c' }}>{log.action_type}</Text>{' '}on Asset ID{' '}
+                    <Text code>{selectedAssetId}</Text>.<br />
+                    Status: <Text strong style={{ color: '#52c41a' }}>{log.status}</Text><br />
+                    Remark: <Text style={{ color: '#025E73' }}>{(log.remarks || '—').toUpperCase()}</Text><br />
+                    <Text type="secondary">
+                      <ClockCircleTwoTone twoToneColor="#52c41a" />{' '}
+                      <Text style={{ color: '#F2A71B' }}>{log.datetime ? new Date(log.datetime).toLocaleString() : 'No timestamp'}</Text>
+                    </Text>
+                  </div>
+                </List.Item>
+              )}
+            />
+          ) : (
+            <div style={{ textAlign: 'center', marginTop: '20px' }}>
+              <Text type="secondary">No History Available.</Text><br />
+              <img style={{ height: '150px', width: '150px', marginTop: '10px' }} src={nodata} alt="No Data" />
+            </div>
+          )}
+        </Modal>
+      </div>
+      <Footer />
+      <BackToTopButton />
+
     </>
   );
 };

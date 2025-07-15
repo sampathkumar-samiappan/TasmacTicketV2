@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Spinner from '../spinner/spinner';
 import Footer from "../Footer/Footer";
+import BackToTopButton from '../BackToTop/BackToTopButton';
 
 import {
   Row,
@@ -899,6 +900,7 @@ const Dashboard = () => {
 
 
     {/* </Spin> */}
+    <BackToTopButton />
      <Footer/>
      </>
       )}

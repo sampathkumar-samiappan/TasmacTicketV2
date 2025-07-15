@@ -8,7 +8,7 @@ import nodata from '../../assets/images/no-data.gif';
 import history from '../../assets/images/history.png';
 import Swal from 'sweetalert2';
 import Footer from "../Footer/Footer";
-
+import BackToTopButton from '../BackToTop/BackToTopButton';
 const { Text } = Typography;
 
 const ReplacementAsset = () => {
@@ -361,7 +361,8 @@ const ReplacementAsset = () => {
       </Modal>
     </div>
     <Footer/>
-    
+    <BackToTopButton />
+
     </>
   );
 };

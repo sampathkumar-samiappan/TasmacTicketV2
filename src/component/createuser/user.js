@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Footer from "../Footer/Footer";
-
+import BackToTopButton from '../BackToTop/BackToTopButton';
 import {
   Input,
   Button,
@@ -329,7 +329,7 @@ const TicketUserManagement = () => {
       <ToastContainer position="bottom-right" autoClose={3000} />
     </div>
     <Footer/>
-   
+   <BackToTopButton />
     </>
   );
 };

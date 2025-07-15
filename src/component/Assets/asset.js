@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Popconfirm } from 'antd';
+import BackToTopButton from '../BackToTop/BackToTopButton';
 import {
   Table,
   Modal,
@@ -855,6 +856,7 @@ function Asset() {
   };
 
   return (
+    <>
     <div>
       <Breadcrumb
         style={{ margin: 15 }}
@@ -1277,8 +1279,8 @@ function Asset() {
       </Flex>
     </div>
 
-
-
+<BackToTopButton />
+ </>
   );
 
 }

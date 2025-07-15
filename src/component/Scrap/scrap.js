@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Footer from "../Footer/Footer";
+import BackToTopButton from '../BackToTop/BackToTopButton';
 import {
   Table,
   Input,
@@ -329,6 +330,7 @@ const ScrapAsset = () => {
       </Modal>
     </div>
     <Footer/>
+    <BackToTopButton />
     </>
   );
 };

@@ -18,30 +18,24 @@ const TicketForm = ({
   const isDisabled = (field) => isEdit && !editableFields.includes(field);
 
   useEffect(() => {
-    const fetchServiceEngineers = async () => {
+    const fetchFieldAssociates = async () => {
       try {
-        const response = await axios.get(`${URL_ticketuser}?fields=["*"]`, {
-          headers: HEADERS,
-        });
-
-        const currentUser = JSON.parse(localStorage.getItem("userData"));
-        const userDepot = currentUser?.depot;
-
-        const engineers = response.data.data.filter(
-          (user) =>
-            user.usertype === "Service Engineer" && user.depot === userDepot
+        const response = await axios.get(
+          "http://3.111.75.24:8000/api/method/get_field_associates",
+          { headers: HEADERS }
         );
 
-        setServiceEngineers(engineers);
+        if (response.data && response.data.data) {
+          setServiceEngineers(response.data.data);
+        }
       } catch (error) {
-        console.error("Error fetching users:", error);
+        console.error("Error fetching field associates:", error);
       }
     };
 
-    fetchServiceEngineers();
+    fetchFieldAssociates();
   }, []);
 
-  // Optional: Pass form instance to parent if needed for submission
   useEffect(() => {
     if (onFormInstanceReady) {
       onFormInstanceReady(form);
@@ -73,7 +67,6 @@ const TicketForm = ({
           </Form.Item>
         </Col>
 
-        {/* ✅ New: Supplier Name */}
         <Col span={24}>
           <Form.Item label="Supplier Name" name="supplier_name">
             <Input
@@ -88,7 +81,6 @@ const TicketForm = ({
           </Form.Item>
         </Col>
 
-        {/* ✅ New: RV Shop */}
         <Col span={24}>
           <Form.Item label="RV Shop" name="rvshop_no">
             <Input
@@ -103,7 +95,6 @@ const TicketForm = ({
           </Form.Item>
         </Col>
 
-        {/* ✅ New: Depot Name */}
         <Col span={24}>
           <Form.Item label="Depot Name" name="depot_name">
             <Input
@@ -144,16 +135,16 @@ const TicketForm = ({
           <Form.Item label="Assigned To" name="assignedto">
             <Select
               showSearch
-              placeholder="Select Service Engineer"
+              placeholder="Select Field Associate"
               value={formValues.assignedto}
               onChange={(value) =>
                 handleChange({ target: { name: "assignedto", value } })
               }
               optionFilterProp="children"
             >
-              {serviceEngineers.map((user) => (
-                <Option key={user.name} value={user.name}>
-                  {user.username}
+              {serviceEngineers.map((associate) => (
+                <Option key={associate} value={associate}>
+                  {associate}
                 </Option>
               ))}
             </Select>

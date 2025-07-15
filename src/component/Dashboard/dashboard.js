@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Spinner from '../spinner/spinner';
+import Footer from "../Footer/Footer";
+
 import {
   Row,
   Col,
@@ -899,6 +901,7 @@ const Dashboard = () => {
     {/* </Spin> */}
      </>
       )}
+      <Footer/>
     </>
   );
 

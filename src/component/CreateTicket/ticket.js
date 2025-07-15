@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
+import Footer from "../Footer/Footer";
+
 import {
   Form,
   Input,
@@ -186,6 +188,7 @@ const CreateTicketForm = () => {
   };
 
   return (
+     <>
     <Card style={{ maxWidth: 1100, margin: '0 auto', borderRadius: 10 }}>
       {/* <h2>Create Ticket</h2> */}
       <Breadcrumb
@@ -224,16 +227,16 @@ const CreateTicketForm = () => {
                   </Select>
                 </Form.Item>
               </Col>
-              <Col span={8}><Form.Item name="asset_type" label="Asset Type"><Select onChange={val => handleChange('asset_type', val)}>{fields.asset_type.map(v => <Option key={v}>{v}</Option>)}</Select></Form.Item></Col>
-              <Col span={8}><Form.Item name="make" label="Make"><Select onChange={val => handleChange('make', val)}>{fields.make.map(v => <Option key={v}>{v}</Option>)}</Select></Form.Item></Col>
-              <Col span={8}><Form.Item name="model" label="Model"><Select onChange={val => handleChange('model', val)}>{fields.model.map(v => <Option key={v}>{v}</Option>)}</Select></Form.Item></Col>
-              <Col span={8}><Form.Item name="serial_number" label="Serial Number"><Select>{fields.serial_numbers.map(v => <Option key={v}>{v}</Option>)}</Select></Form.Item></Col>
+              <Col span={8}><Form.Item name="asset_type" label="Asset Type" rules={[{ required: true }]}><Select onChange={val => handleChange('asset_type', val)}>{fields.asset_type.map(v => <Option key={v}>{v}</Option>)}</Select></Form.Item></Col>
+              <Col span={8}><Form.Item name="make" label="Make" rules={[{ required: true }]}><Select onChange={val => handleChange('make', val)}>{fields.make.map(v => <Option key={v}>{v}</Option>)}</Select></Form.Item></Col>
+              <Col span={8}><Form.Item name="model" label="Model" rules={[{ required: true }]}><Select onChange={val => handleChange('model', val)}>{fields.model.map(v => <Option key={v}>{v}</Option>)}</Select></Form.Item></Col>
+              <Col span={8}><Form.Item name="serial_number" label="Serial Number" rules={[{ required: true }]}><Select>{fields.serial_numbers.map(v => <Option key={v}>{v}</Option>)}</Select></Form.Item></Col>
             </>
           )}
 
           {ticketType === 'Software' && (
             <>
-              <Col span={8}><Form.Item name="ticket_type" label="Ticket Type"><Select onChange={v => setTntType(v)}><Option value="TNT">TNT</Option><Option value="HRMS">HRMS</Option></Select></Form.Item></Col>
+              <Col span={8}><Form.Item name="ticket_type" label="Ticket Type" rules={[{ required: true }]}><Select onChange={v => setTntType(v)}><Option value="TNT">TNT</Option><Option value="HRMS">HRMS</Option><option value="Dashboard & Reports">Dashboard & Reports</option><option value="Finance">Finance</option></Select></Form.Item></Col>
               {tntType === 'TNT' && (
                 <>
                   <Col span={8}>
@@ -383,12 +386,13 @@ const CreateTicketForm = () => {
               )}
             </>
           )}
-          <Col span={8}><Form.Item name="issue_type" label="Issue Type"><Input /></Form.Item></Col>
-          <Col span={8}><Form.Item name="ticket_raised_by" label="Ticket Raised By"><Input /></Form.Item></Col>
-          <Col span={8}><Form.Item name="priority" label="Priority"><Select><Option value="High">High</Option><Option value="Low">Low</Option></Select></Form.Item></Col>
-          <Col span={8}><Form.Item name="status" label="Status"><Select><Option value="Open">Open</Option><Option value="Closed">Closed</Option></Select></Form.Item></Col>
+          <Col span={8}><Form.Item name="issue_type" label="Issue Type" rules={[{ required: true }]}><Input /></Form.Item></Col>
+          <Col span={8}><Form.Item name="ticket_raised_by" label="Ticket Raised By" rules={[{ required: true }]}><Input /></Form.Item></Col>
+          <Col span={8}><Form.Item name="raised_user_phone" label="Contact Number" rules={[{ required: true }]}><Input /></Form.Item></Col>
+          <Col span={8}><Form.Item name="priority" label="Priority" rules={[{ required: true }]}><Select><Option value="High">High</Option><option value="Medium">Medium</option><Option value="Low">Low</Option></Select></Form.Item></Col>
+          {/* <Col span={8}><Form.Item name="status" label="Status"><Select><Option value="Open">Open</Option><Option value="Closed">Closed</Option></Select></Form.Item></Col> */}
           <Col span={8}><Form.Item label="Upload File"><Upload fileList={fileList} onChange={handleFileChange} beforeUpload={() => false} maxCount={1}><Button style={{ width: 250 }} icon={<UploadOutlined />}>Upload</Button></Upload></Form.Item></Col>
-          <Col span={24}><Form.Item name="description" label="Description"><TextArea rows={4} /></Form.Item></Col>
+          <Col span={24}><Form.Item name="description" label="Description" rules={[{ required: true }]}><TextArea rows={4} /></Form.Item></Col>
         </Row>
         <Form.Item style={{ textAlign: 'center' }}>
           <Button
@@ -405,6 +409,9 @@ const CreateTicketForm = () => {
 
       </Form>
     </Card>
+   
+    <Footer/>
+    </>
   );
 };
 

@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import Footer from "../Footer/Footer";
+
 import {
   Input,
   Button,
@@ -234,6 +236,7 @@ const TicketUserManagement = () => {
   ];
 
   return (
+     <>
     <div>
        <Breadcrumb
             style={{margin:15}}
@@ -325,6 +328,9 @@ const TicketUserManagement = () => {
       {/* Toast Notification Container */}
       <ToastContainer position="bottom-right" autoClose={3000} />
     </div>
+    <Footer/>
+   
+    </>
   );
 };
 

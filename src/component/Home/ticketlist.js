@@ -2,6 +2,7 @@ import { useEffect, useState, useContext, useCallback, useMemo } from "react";
 import nodata from '../../assets/images/no-data.gif';
 import history from '../../assets/images/history.png';
 import axios from 'axios';
+import Footer from "../Footer/Footer";
 import {
   Table,
   Tag,
@@ -258,48 +259,52 @@ const Dashboard = () => {
     fetchOffice();
   }, []);
 
-  const fetchOffice = async () => {
-    try {
-      const user = JSON.parse(localStorage.getItem("userData"));
+const fetchOffice = async () => {
+  try {
+    const user = JSON.parse(localStorage.getItem("userData"));
 
-      if (!user || !user.user_type) {
-        console.error("User data missing from localStorage");
-        return;
-      }
-
-      const { user_type, region, dm, depot, user_id } = user;
-
-      const params = new URLSearchParams();
-      params.append("usertype", user_type);
-
-      if (user_type === "Support Team" || user_type === "RvShop Admin") {
-        if (region) params.append("region", region);
-      } else if (user_type === "Dm Admin") {
-        if (dm) params.append("dm", dm);
-      } else if (user_type === "Depot Admin") {
-        if (depot) params.append("depot", depot);
-      } else if (user_type === "Service Engineer") {
-        if (depot) params.append("depot", depot); // optional, if still needed
-        if (user_id) params.append("user_id", user_id); // required for assignedto filter
-      }
-
-      const url = `${BASE_URL}/api/method/get_tickets_by_user?${params.toString()}`;
-      const response = await fetch(url, {
-        method: "GET",
-        headers: HEADERS,
-      });
-
-      const jsonData = await response.json();
-
-      if (Array.isArray(jsonData.message?.tickets)) {
-        setTicketData(jsonData.message.tickets); // backend already filters
-      } else {
-        setTicketData([]);
-      }
-    } catch (error) {
-      console.error("Error fetching tickets:", error);
+    if (!user || !user.user_type) {
+      console.error("User data missing from localStorage");
+      return;
     }
-  };
+
+    const {username,user_type, region, dm, depot, shop_number, user_id } = user;
+
+    const params = new URLSearchParams();
+    params.append("usertype", user_type);
+
+    if (user_type === "Support Team" || user_type === "Admin") {
+      // No additional filters required
+    } else if (user_type === "Region Admin") {
+      if (region) params.append("region", region);
+    } else if (user_type === "Dm Admin") {
+      if (dm) params.append("dm", dm);
+    } else if (user_type === "Depot Admin") {
+      if (depot) params.append("depot", depot);
+    } else if (user_type === "RvShop Admin") {
+      if (shop_number) params.append("shop_number", shop_number);
+    } else if (user_type === "Service Engineer") {
+      if (user_id) params.append("assignedto", username); // This is required by the Frappe script
+    }
+
+    const url = `${BASE_URL}/api/method/get_tickets_by_user?${params.toString()}`;
+    const response = await fetch(url, {
+      method: "GET",
+      headers: HEADERS,
+    });
+
+    const jsonData = await response.json();
+
+    if (Array.isArray(jsonData.message?.tickets)) {
+      setTicketData(jsonData.message.tickets);
+    } else {
+      setTicketData([]);
+    }
+  } catch (error) {
+    console.error("Error fetching tickets:", error);
+  }
+};
+
 
   const columns = useMemo(() => [
     {
@@ -377,15 +382,23 @@ const Dashboard = () => {
 
       sorter: (a, b) => (a.depot || '').localeCompare(b.depot || ''),
     },
-    {
-      title: 'Office Category',
-      dataIndex: 'office_category',
-      sorter: (a, b) => (a.office_category || '').localeCompare(b.office_category || ''),
-    },
+    // {
+    //   title: 'Office Category',
+    //   dataIndex: 'office_category',
+    //   sorter: (a, b) => (a.office_category || '').localeCompare(b.office_category || ''),
+    // },
     {
       title: 'Created On',
       dataIndex: 'creation',
       sorter: (a, b) => new Date(a.creation || 0) - new Date(b.creation || 0),
+    },
+    {
+      title: 'Raised By',
+      dataIndex: 'ticket_raised_by'
+    },
+    {
+      title: 'Contact Number',
+      dataIndex: 'raised_user_phone'
     }
   ], [handleOpenDialog]);
 
@@ -459,7 +472,7 @@ const Dashboard = () => {
           </Col>
 
           {/* Region Filter */}
-          <Col>
+          {/* <Col>
             <Form.Item label="Region" style={{ marginBottom: 16 }}>
               <Select
                 value={region}
@@ -477,10 +490,10 @@ const Dashboard = () => {
                 ))}
               </Select>
             </Form.Item>
-          </Col>
+          </Col> */}
 
           {/* DM Filter */}
-          <Col>
+          {/* <Col>
             <Form.Item label="DM" style={{ marginBottom: 16 }}>
               <Select
                 value={dm}
@@ -498,10 +511,10 @@ const Dashboard = () => {
                 ))}
               </Select>
             </Form.Item>
-          </Col>
+          </Col> */}
 
           {/* Depot Filter */}
-          <Col>
+          {/* <Col>
             <Form.Item label="Depot" style={{ marginBottom: 16 }}>
               <Select
                 value={depot}
@@ -516,7 +529,7 @@ const Dashboard = () => {
                 ))}
               </Select>
             </Form.Item>
-          </Col>
+          </Col> */}
 
           <Col>
             <Tooltip title="Reset Filters" placement="bottom">
@@ -635,6 +648,7 @@ const Dashboard = () => {
         </Modal>
       </Flex>
       {/* Ticket Log End*/}
+      <Footer/>
     </>
   );
 };

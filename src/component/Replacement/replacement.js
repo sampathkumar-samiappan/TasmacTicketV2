@@ -7,6 +7,7 @@ import { BASE_URL, HEADERS } from '../API Config/config';
 import nodata from '../../assets/images/no-data.gif';
 import history from '../../assets/images/history.png';
 import Swal from 'sweetalert2';
+import Footer from "../Footer/Footer";
 
 const { Text } = Typography;
 
@@ -262,6 +263,7 @@ const ReplacementAsset = () => {
   ];
 
   return (
+    <>
     <div style={{ padding: 24 }}>
       {/* <h2>Replacement Assets</h2> */}
       <Breadcrumb
@@ -358,6 +360,9 @@ const ReplacementAsset = () => {
         )}
       </Modal>
     </div>
+    <Footer/>
+    
+    </>
   );
 };
 

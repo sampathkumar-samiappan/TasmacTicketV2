@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Footer from "../Footer/Footer";
 import {
   Table,
   Input,
@@ -234,6 +235,7 @@ const ScrapAsset = () => {
   ];
 
   return (
+    <>
     <div style={{ width: "1250px", overflowX: "auto" }}>
       {/* <h2>Scrap Assets</h2> */}
       <Breadcrumb
@@ -326,6 +328,8 @@ const ScrapAsset = () => {
         )}
       </Modal>
     </div>
+    <Footer/>
+    </>
   );
 };
 

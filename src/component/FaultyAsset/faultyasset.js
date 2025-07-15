@@ -1,6 +1,7 @@
 
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import Footer from "../Footer/Footer";
 import { BASE_URL, HEADERS } from "../API Config/config";
 import {
   Table,
@@ -272,6 +273,7 @@ const FaultyAsset = () => {
   ];
 
   return (
+      <>
     <div style={{ padding: 24 }}>
       <div style={{ position: 'sticky', top: 0, backgroundColor: 'white', zIndex: 10, paddingBottom: 8 }}>
         {/* <h2 style={{ margin: 0 }}>Faulty Assets</h2> */}
@@ -376,6 +378,9 @@ const FaultyAsset = () => {
         )}
       </Modal>
     </div>
+    <Footer/>
+  
+    </>
   );
 };
 

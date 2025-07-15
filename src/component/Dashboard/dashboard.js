@@ -899,9 +899,9 @@ const Dashboard = () => {
 
 
     {/* </Spin> */}
+     <Footer/>
      </>
       )}
-      <Footer/>
     </>
   );
 
